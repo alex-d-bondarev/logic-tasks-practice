@@ -3,7 +3,7 @@ package org.parctice.app;
 import java.util.Scanner;
 
 /**
- * Print simple factorial
+ * Print simple factorial of 1 <= number <= 15
  */
 
 public class SimpleFactorial {

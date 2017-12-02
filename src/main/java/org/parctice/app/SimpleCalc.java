@@ -2,6 +2,10 @@ package org.parctice.app;
 
 import java.text.DecimalFormat;
 
+/**
+ * Simple calc with + - * and / commands
+ */
+
 public class SimpleCalc {
 
     private static final String INVALID_DATA = "INVALID DATA";
