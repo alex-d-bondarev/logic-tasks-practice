@@ -28,7 +28,8 @@ public class LettersCounterTest {
     @Parameters
     public static Collection<Object[]> getParameters() {
         return Arrays.asList(new Object[][] {
-                { new SimpleCounter() }
+                { new SimpleCounter() },
+                { new CounterWithMerge() }
         });
     }
 
@@ -90,6 +91,18 @@ public class LettersCounterTest {
                 } else {
                     result.put(currentLetter, 1);
                 }
+            }
+
+            return result;
+        }
+    }
+
+    static class CounterWithMerge implements Counter{
+        public Map<Character, Integer> count(String input){
+            Map<Character, Integer> result = new HashMap<>();
+
+            for (char currentLetter : input.toCharArray()){
+                result.merge(currentLetter, 1, Integer::sum);
             }
 
             return result;
