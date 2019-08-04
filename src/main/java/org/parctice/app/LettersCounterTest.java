@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -93,7 +92,7 @@ public class LettersCounterTest {
     @Test
     public void calculateBigFile(){
         int times = 1000;
-        List<Long> durations = new ArrayList();
+        List<Long> durations = new ArrayList<>();
         double average;
         String message = "On average, it took %.3f milliseconds for %s to calculate a text %d times";
         String testedCounterName = counter.getClass().getSimpleName();
