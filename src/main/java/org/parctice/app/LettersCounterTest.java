@@ -8,6 +8,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.toMap;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,12 +30,13 @@ public class LettersCounterTest {
     public static Collection<Object[]> getParameters() {
         return Arrays.asList(new Object[][] {
                 { new SimpleCounter() },
-                { new CounterWithMerge() }
+                { new CounterWithMerge() },
+                { new CounterWithStream() }
         });
     }
 
     @Test
-    public void returns3Letters(){
+    public void returnsExpectedAmountOfLetters(){
         Map<Character, Integer> count = counter.count("abc");
 
         assertThat("Map size should equal number of unique letters. For 'abc' that is 3",
@@ -75,6 +77,13 @@ public class LettersCounterTest {
         assertThat(count, IsMapContaining.hasEntry('A', 2));
     }
 
+    @Test
+    public void spacesAreCounted(){
+        Map<Character, Integer> count = counter.count("a b c");
+
+        assertThat(count, IsMapContaining.hasEntry(' ', 2));
+    }
+
     interface Counter{
         Map<Character, Integer> count(String input);
     }
@@ -106,6 +115,16 @@ public class LettersCounterTest {
             }
 
             return result;
+        }
+    }
+
+    static class CounterWithStream implements Counter{
+        public Map<Character, Integer> count(String input){
+            return input.chars().boxed()
+                    .collect(toMap(
+                            k -> (char) k.intValue(),
+                            v -> 1,
+                            Integer::sum));
         }
     }
 }
