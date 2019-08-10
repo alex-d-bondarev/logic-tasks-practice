@@ -1,4 +1,4 @@
-package org.parctice.app;
+package org.parctice.app.collected;
 
 import java.util.Map;
 import java.util.TreeMap;

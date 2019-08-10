@@ -1,19 +1,14 @@
-package org.parctice.app;
+package org.parctice.app.collected.count_letters;
 
 import org.hamcrest.collection.IsMapContaining;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.parctice.app.helpers.FileHelper;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toMap;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -96,7 +91,7 @@ public class LettersCounterTest {
         double average;
         String message = "On average, it took %.3f milliseconds for %s to calculate a text %d times";
         String testedCounterName = counter.getClass().getSimpleName();
-        String whiteFang = stringFromFile("src/main/resources/910.txt");
+        String whiteFang = FileHelper.stringFromFile("src/main/resources/910.txt");
 
         for (int i = 0; i < times; i++) {
             long startTime = System.nanoTime();
@@ -108,67 +103,5 @@ public class LettersCounterTest {
         average = durations.stream().mapToDouble(d -> d).average().orElse(-1d)/1_000_000;
 
         System.out.println(String.format(message, average, testedCounterName, times));
-    }
-
-    // credit to https://howtodoinjava.com/java/io/java-read-file-to-string-examples/
-    private static String stringFromFile(String filePath)
-    {
-        StringBuilder contentBuilder = new StringBuilder();
-        try (Stream<String> stream = Files.lines( Paths.get(filePath), StandardCharsets.UTF_8))
-        {
-            stream.forEach(s -> contentBuilder.append(s).append("\n"));
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        return contentBuilder.toString();
-    }
-
-    interface Counter{
-        Map<Character, Integer> count(String input);
-    }
-
-    // This one is the easiest to implement and has average calculation speed
-    static class SimpleCounter implements Counter{
-        public Map<Character, Integer> count(String input){
-            Map<Character, Integer> result = new HashMap<>();
-
-            for (char currentLetter : input.toCharArray()){
-
-                if(result.containsKey(currentLetter)){
-                    int newValue = result.get(currentLetter) + 1;
-                    result.put(currentLetter, newValue);
-                } else {
-                    result.put(currentLetter, 1);
-                }
-            }
-
-            return result;
-        }
-    }
-
-    // This one is the fastest on my machine
-    static class CounterWithMerge implements Counter{
-        public Map<Character, Integer> count(String input){
-            Map<Character, Integer> result = new HashMap<>();
-
-            for (char currentLetter : input.toCharArray()){
-                result.merge(currentLetter, 1, Integer::sum);
-            }
-
-            return result;
-        }
-    }
-
-    // This one is the slowest on my machine
-    static class CounterWithStream implements Counter{
-        public Map<Character, Integer> count(String input){
-            return input.chars().boxed()
-                    .collect(toMap(
-                            k -> (char) k.intValue(),
-                            v -> 1,
-                            Integer::sum));
-        }
     }
 }

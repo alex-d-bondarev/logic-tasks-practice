@@ -1,4 +1,4 @@
-package org.parctice.app;
+package org.parctice.app.collected;
 
 import org.junit.Assert;
 import org.junit.Test;

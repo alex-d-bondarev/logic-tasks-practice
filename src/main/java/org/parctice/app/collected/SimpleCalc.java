@@ -1,4 +1,4 @@
-package org.parctice.app;
+package org.parctice.app.collected;
 
 import java.text.DecimalFormat;
 
