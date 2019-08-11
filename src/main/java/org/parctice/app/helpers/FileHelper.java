@@ -21,4 +21,8 @@ public class FileHelper {
         }
         return contentBuilder.toString();
     }
+
+    public static String stringFromFileInSameLine(String filePath){
+        return stringFromFile(filePath).replace("\n", " ").replace("\r", " ");
+    }
 }

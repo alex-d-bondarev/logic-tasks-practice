@@ -13,7 +13,7 @@ public class SimpleLoopSubStrings implements SubStrings {
 
                 if(tempSubstringLength > maxFoundLength){
                     if(text.contains(tempSubstring)){
-                        printDebugMessageAbout(text, tempSubstring);
+//                        printDebugMessageAbout(text, tempSubstring);
                         maxFoundLength = tempSubstringLength;
                     }
                 }

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.parctice.app.helpers.FileHelper;
 
 import java.util.*;
 
@@ -30,7 +31,8 @@ public class SubStringsTest {
                 // This solution is too slow. It did not finish successfully on my machine.
                 // { new SlowRecursiveSubStringsWithCounter() },
                 // This solution is a bit faster, but still slow. It did not finish successfully on my machine either.
-                { new SimpleLoopSubStrings() } // This Solution runs testWithLongString pretty fast
+                { new SimpleLoopSubStrings() }, // Works pretty fast, when not using recursion
+                { new CharArrayLoopSubStrings() } // This solution is from geeksforgeeks.org
         });
     }
 
@@ -52,5 +54,34 @@ public class SubStringsTest {
 
         Assert.assertEquals("Expected substring is ' would' (with space), which is 6 chars long",
                 expectedLength, solution.getLongestSubstringLength(x, y));
+    }
+
+    @Test
+    public void countHouseThatBuiltJackSeveralTimes(){
+        String x = "the dog, That worried the cat, That kill'd the rat, That ate the malt";
+        String y = FileHelper.stringFromFileInSameLine("src/main/resources/the_house_that_jack_built.txt");
+        int expectedLength = 69;
+
+        int times = 1000;
+        List<Long> durations = new ArrayList<>();
+        double average;
+        String testedCounterName = solution.getClass().getSimpleName();
+        String durationMessage = "On average, it took %.3f milliseconds for %s to calculate a text %d times";
+        String testMessage = "Expected substring is '%s', which is %d chars long and is repeated in text several times";
+
+
+        Assert.assertEquals(String.format(testMessage, x, expectedLength),
+                expectedLength, solution.getLongestSubstringLength(x, y));
+
+
+        for (int i = 0; i < times; i++) {
+            long startTime = System.nanoTime();
+            solution.getLongestSubstringLength(x, y);
+            long stopTime = System.nanoTime();
+            durations.add(stopTime - startTime);
+        }
+
+        average = durations.stream().mapToDouble(d -> d).average().orElse(-1d)/1_000_000;
+        System.out.println(String.format(durationMessage, average, testedCounterName, times));
     }
 }
