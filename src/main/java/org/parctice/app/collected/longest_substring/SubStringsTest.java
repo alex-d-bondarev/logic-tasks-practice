@@ -32,8 +32,19 @@ public class SubStringsTest {
                 // { new SlowRecursiveSubStringsWithCounter() },
                 // This solution is a bit faster, but still slow. It did not finish successfully on my machine either.
                 { new SimpleLoopSubStrings() }, // Works pretty fast, when not using recursion
+                { new OptimizedLoopSubStrings() }, // Works pretty fast, when not using recursion
                 { new CharArrayLoopSubStrings() } // This solution is from geeksforgeeks.org
         });
+    }
+
+    @Test
+    public void testFullMatch(){
+        String x = "abcdefghigklmnop";
+        String y = "abcdefghigklmnop";
+        int expectedLength = 16;
+
+        Assert.assertEquals("Expected substring is 'abcdefghigklmnop', which is 16 chars long",
+                expectedLength, solution.getLongestSubstringLength(x, y));
     }
 
     @Test
