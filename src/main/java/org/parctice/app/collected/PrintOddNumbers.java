@@ -9,20 +9,18 @@ import java.util.Arrays;
 public class PrintOddNumbers {
 
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(oddNumbers(0,24)));
+        System.out.println(Arrays.toString(getOddNumbersBetween(0,24)));
+        System.out.println(Arrays.toString(getOddNumbersBetween(1,15)));
     }
 
-
-
-    static int[] oddNumbers(int l, int r) {
+    private static int[] getOddNumbersBetween(int from, int to) {
         int[] result;
         int size;
         int iterator = 0;
-        int start = ((l & 1) == 0) ? l+1 : l;
-        int stop = ((r & 1) == 0) ? r-1 : r;
+        int start = isEven(from) ? from+1 : from;
+        int stop = isEven(to) ? to-1 : to;
 
         size = ((stop - start) / 2) + 1;
-
         result = new int[size];
 
         for (int i = start; i <= stop; i+=2){
@@ -31,5 +29,9 @@ public class PrintOddNumbers {
         }
 
         return result;
+    }
+
+    private static boolean isEven(int number){
+        return (number & 1) == 0;
     }
 }
