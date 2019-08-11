@@ -1,4 +1,4 @@
-package org.parctice.app.hackerrank.java;
+package org.parctice.app.hackerrank.java.introduction;
 
 import java.io.BufferedReader;
 import java.io.IOException;
