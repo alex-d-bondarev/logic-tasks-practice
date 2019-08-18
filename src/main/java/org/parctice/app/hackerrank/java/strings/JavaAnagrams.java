@@ -8,13 +8,18 @@ import org.junit.Test;
 public class JavaAnagrams {
 
     static boolean isAnagram(String a, String b) {
-        char[] aArray = a.toLowerCase().toCharArray();
-        char[] bArray = b.toLowerCase().toCharArray();
+        if(a.length() == b.length()) {
 
-        a = new String(sortArray(aArray));
-        b = new String(sortArray(bArray));
+            char[] aArray = a.toLowerCase().toCharArray();
+            char[] bArray = b.toLowerCase().toCharArray();
 
-        return a.equals(b);
+            a = new String(sortArray(aArray));
+            b = new String(sortArray(bArray));
+
+            return a.equals(b);
+        } else {
+            return false;
+        }
     }
 
     static char[] sortArray(char[] array){
@@ -41,5 +46,10 @@ public class JavaAnagrams {
     @Test
     public void thisIsNotAnagram(){
         Assert.assertFalse(isAnagram("anagramm", "marganaa"));
+    }
+
+    @Test
+    public void thisIsDefinitelyNotAnagram(){
+        Assert.assertFalse(isAnagram("anagram", "abc"));
     }
 }
