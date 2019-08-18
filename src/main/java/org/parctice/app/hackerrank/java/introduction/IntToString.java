@@ -14,7 +14,7 @@ public class IntToString {
             int n = in .nextInt();
             in.close();
 
-            String s= String.valueOf(n);
+            String s = String.valueOf(n);
 
 
             if (n == Integer.parseInt(s)) {
@@ -47,6 +47,4 @@ class DoNotTerminate {
         };
         System.setSecurityManager(securityManager);
     }
-}
-
 }
