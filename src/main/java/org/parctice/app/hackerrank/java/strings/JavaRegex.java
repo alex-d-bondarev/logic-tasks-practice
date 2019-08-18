@@ -1,4 +1,4 @@
-package org.parctice.app.hackerrank.java.introduction;
+package org.parctice.app.hackerrank.java.strings;
 
 import java.util.Scanner;
 
