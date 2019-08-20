@@ -5,6 +5,12 @@ import org.junit.Test;
 
 import java.util.Scanner;
 
+// Input:
+// There will be exactly 6 lines, each containing 6 integers separated by spaces.
+// Each integer will be between -9 and 9 inclusive.
+// Output:
+// Print the answer (biggest sum of hour glass) to this problem on a single line.
+
 public class Java2DArray {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -24,50 +30,27 @@ public class Java2DArray {
         }
 
         scanner.close();
+
+        System.out.println(getBiggestHourGlassSumFrom(arr));
     }
 
     // Given array is flexible in size,
     // but assuming it is at least 3x3 and is always a rectangle
     // tested on 6x6
-    private int getBiggestHourGlassSumFrom(int[][] array) {
-        int maxSum = -999;
+    private static int getBiggestHourGlassSumFrom(int[][] array) {
+        int maxSum = Integer.MIN_VALUE;
         int newSum;
-        int[][] tempGlassHour = new int[3][3];
         for (int i = 0; i <= array.length - HOURGLASS_SIZE; i++) {
             for (int j = 0; j <= array[i].length - HOURGLASS_SIZE; j++) {
-                tempGlassHour[0][0] = array[j][i];
-                tempGlassHour[0][1] = array[j][i + 1];
-                tempGlassHour[0][2] = array[j][i + 2];
-                tempGlassHour[1][0] = array[j + 1][i];
-                tempGlassHour[1][1] = array[j + 1][i + 1];
-                tempGlassHour[1][2] = array[j + 1][i + 2];
-                tempGlassHour[2][0] = array[j + 2][i];
-                tempGlassHour[2][1] = array[j + 2][i + 1];
-                tempGlassHour[2][2] = array[j + 2][i + 2];
-                newSum = getHourGlassSumFrom(tempGlassHour);
-                maxSum = newSum > maxSum ? newSum : maxSum;
-            }
 
+                newSum = array[j]    [i] + array[j]    [i + 1] + array[j]    [i + 2]
+                                         + array[j + 1][i + 1] +
+                       + array[j + 2][i] + array[j + 2][i + 1] + array[j + 2][i + 2];
+
+                maxSum = Math.max(newSum, maxSum);
+            }
         }
         return maxSum;
-    }
-
-    // Assuming given array is always 3x3
-    private int getHourGlassSumFrom(int[][] array) {
-        return array[0][0] + array[0][1] + array[0][2] +
-                array[1][1] +
-                array[2][0] + array[2][1] + array[2][2];
-    }
-
-    @Test
-    public void testSimpleHourGlass() {
-        int[][] testArray = {
-                {1, 1, 1},
-                {9, 1, 9},
-                {1, 1, 1}};
-        int expectedSum = 7;
-        int actualSum = getHourGlassSumFrom(testArray);
-        Assert.assertEquals(expectedSum, actualSum);
     }
 
     @Test
