@@ -7,13 +7,13 @@ public class JavaSort {
         Scanner in = new Scanner(System.in);
         int testCases = Integer.parseInt(in.nextLine());
 
-        List<Student> studentList = new ArrayList<Student>();
+        List<StudentForSort> studentList = new ArrayList<StudentForSort>();
         while (testCases > 0) {
             int id = in.nextInt();
             String fname = in.next();
             double cgpa = in.nextDouble();
 
-            Student st = new Student(id, fname, cgpa);
+            StudentForSort st = new StudentForSort(id, fname, cgpa);
             studentList.add(st);
 
             testCases--;
@@ -21,18 +21,18 @@ public class JavaSort {
 
         Collections.sort(studentList);
 
-        for (Student st : studentList) {
+        for (StudentForSort st : studentList) {
             System.out.println(st.getFname());
         }
     }
 }
 
-class Student implements Comparable<Student> {
+class StudentForSort implements Comparable<StudentForSort> {
     private int id;
     private String fname;
     private double cgpa;
 
-    public Student(int id, String fname, double cgpa) {
+    public StudentForSort(int id, String fname, double cgpa) {
         super();
         this.id = id;
         this.fname = fname;
@@ -51,14 +51,14 @@ class Student implements Comparable<Student> {
         return cgpa;
     }
 
-    private Comparator<Student> comparator =
+    private Comparator<StudentForSort> comparator =
             Comparator.
-                    comparingDouble(Student::getCgpa).reversed().
-                    thenComparing(Student::getFname).
-                    thenComparingInt(Student::getId);
+                    comparingDouble(StudentForSort::getCgpa).reversed().
+                    thenComparing(StudentForSort::getFname).
+                    thenComparingInt(StudentForSort::getId);
 
     @Override
-    public int compareTo(Student otherStudent) {
+    public int compareTo(StudentForSort otherStudent) {
         return comparator.compare(this, otherStudent);
     }
 }
