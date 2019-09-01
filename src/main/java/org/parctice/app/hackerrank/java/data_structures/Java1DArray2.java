@@ -1,124 +1,79 @@
 package org.parctice.app.hackerrank.java.data_structures;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.util.Scanner;
 
 public class Java1DArray2 {
 
-    public enum MOVE{FORWARD, BACKWARD, JUMP};
-
     public static boolean canWin(int leap, int[] game) {
-        return firstStrategyWinsTheGame(leap, game) || anotherStrategyWinsTheGame(leap, game);
-    }
 
-    private static boolean firstStrategyWinsTheGame(int leap, int[] game){
-        boolean canWin = false;
+        CELL_STATE[] gameWithStates = convertToGameWithStates(game);
+        boolean won = false;
         boolean notStuck = true;
-        int currentPosition = 0;
-        int movedBackwardsTimes = 0;
-        MOVE nextMove = MOVE.FORWARD;
+        boolean lookingForNewState;
 
-        while (notStuck && !canWin){
-            switch (nextMove){
-                case FORWARD:
-                    if(canWalkForward(currentPosition, game)){
-                        currentPosition++;
-                    } else {
-                        nextMove = MOVE.JUMP;
+        while (!won && notStuck){
+            lookingForNewState = true;
+
+            for (int i = game.length - 1; i >= -1 && lookingForNewState; i--) {
+                if(i == -1){
+                    notStuck = false;
+                } else if(gameWithStates[i].equals(CELL_STATE.ACCESSIBLE)){
+                    won = wonTheGame(i, leap, gameWithStates);
+                    if(!won){
+                        gameWithStates = getNewAccessibleStatesFrom(i, leap, gameWithStates);
                     }
-                    break;
-                case JUMP:
-                    if(canJump(currentPosition, leap, game)){
-                        currentPosition += leap;
-                        movedBackwardsTimes = 0;
-                        nextMove = MOVE.FORWARD;
-                    } else {
-                        nextMove = MOVE.BACKWARD;
-                    }
-                    break;
-                case BACKWARD:
-                    if(canWalkBackward(currentPosition, game)){
-                        currentPosition--;
-                        movedBackwardsTimes++;
-                        if(movedBackwardsTimes < leap) {
-                            nextMove = MOVE.JUMP;
-                        } else {
-                            notStuck = false;
-                        }
-                    } else {
-                        notStuck = false;
-                    }
+                    lookingForNewState = false;
+                }
             }
-
-            canWin = wonTheGame(currentPosition, leap, game);
         }
 
-        return canWin;
+        return won;
     }
 
-    private static boolean anotherStrategyWinsTheGame(int leap, int[] game){
-        boolean canWin = false;
-        boolean notStuck = true;
-        int currentPosition = 0;
-        int movedBackwardsTimes = 0;
-        MOVE nextMove = MOVE.FORWARD;
-
-        while (notStuck && !canWin){
-            switch (nextMove){
-                case JUMP:
-                    if(canJump(currentPosition, leap, game)){
-                        currentPosition += leap;
-                        movedBackwardsTimes = 0;
-                        nextMove = MOVE.JUMP;
-                    } else {
-                        nextMove = MOVE.FORWARD;
-                    }
-                    break;
-                case FORWARD:
-                    if(canWalkForward(currentPosition, game)){
-                        currentPosition++;
-                        nextMove = MOVE.JUMP;
-                    } else {
-                        nextMove = MOVE.BACKWARD;
-                    }
-                    break;
-                case BACKWARD:
-                    if(canWalkBackward(currentPosition, game)){
-                        currentPosition--;
-                        movedBackwardsTimes++;
-                        if(movedBackwardsTimes < leap) {
-                            nextMove = MOVE.FORWARD;
-                        } else {
-                            notStuck = false;
-                        }
-                    } else {
-                        notStuck = false;
-                    }
-            }
-            canWin = wonTheGame(currentPosition, leap, game);
+    private static CELL_STATE[] getNewAccessibleStatesFrom(int i, int leap, CELL_STATE[] gameWithStates) {
+        if(canWalkForward(i, gameWithStates)){
+            gameWithStates[i+1] = CELL_STATE.ACCESSIBLE;
+        }
+        if(canWalkBackward(i, gameWithStates)){
+            gameWithStates[i-1] = CELL_STATE.ACCESSIBLE;
+        }
+        if(canJump(i, leap, gameWithStates)){
+            gameWithStates[i+leap] = CELL_STATE.ACCESSIBLE;
         }
 
-        return canWin;
+        gameWithStates[i] = CELL_STATE.CALCULATED;
+        return gameWithStates;
     }
 
-    private static boolean wonTheGame(int position, int leap,  int[] game){
+    private static boolean wonTheGame(int position, int leap,  CELL_STATE[] game){
         return position >= game.length -1 || position + leap >= game.length;
     }
 
-    private static boolean canWalkForward(int position, int[] game){
-        return game[position+1]==0;
+    private static boolean canWalkForward(int position, CELL_STATE[] game){
+        return game[position+1].equals(CELL_STATE.OPEN);
     }
 
-    private static boolean canWalkBackward(int position, int[] game){
-        return position > 0 && game[position-1]==0;
+    private static boolean canWalkBackward(int position, CELL_STATE[] game){
+        return position > 0 && game[position-1].equals(CELL_STATE.OPEN);
     }
 
-    private static boolean canJump(int position, int leap, int[] game){
-        return game[position+leap]==0 && leap > 0;
+    private static boolean canJump(int position, int leap, CELL_STATE[] game){
+        return game[position+leap].equals(CELL_STATE.OPEN) && leap > 0;
     }
 
+
+    private static CELL_STATE[] convertToGameWithStates(int[] game) {
+        CELL_STATE[] gameWithStates = new CELL_STATE[game.length];
+
+        for (int i = 0; i < game.length; i++) {
+            gameWithStates[i] = (game[i] == 1 ? CELL_STATE.BLOCKED : CELL_STATE.OPEN);
+        }
+
+        gameWithStates[0] = CELL_STATE.ACCESSIBLE;
+        return gameWithStates;
+    }
+
+    private enum CELL_STATE{OPEN, BLOCKED, ACCESSIBLE, CALCULATED};
 
 
     public static void main(String[] args) {
@@ -136,16 +91,5 @@ public class Java1DArray2 {
             System.out.println( (canWin(leap, game)) ? "YES" : "NO" );
         }
         scan.close();
-    }
-
-
-
-    @Test
-    public void needComplexStrategy(){
-        int leap = 7;
-        int[] game = {0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0,
-                0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1};
-
-        Assert.assertTrue(Java1DArray2.canWin(leap, game));
     }
 }
