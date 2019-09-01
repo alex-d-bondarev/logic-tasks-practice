@@ -1,8 +1,6 @@
 package org.parctice.app.hackerrank.java.data_structures;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class JavaPriorityQueue {
     private final static Scanner scan = new Scanner(System.in);
@@ -30,19 +28,76 @@ public class JavaPriorityQueue {
 }
 
 /*
- * Create the StudentForSort and Priorities classes below.
+ * Create the Student and Priorities classes below.
  */
 
-class Student {
+class Student implements Comparable<Student> {
+
+    private int id;
+    private String name;
+    private double cgpa;
+
+    public Student(int id, String name, double cgpa){
+        this.id = id;
+        this.name = name;
+        this.cgpa = cgpa;
+    }
 
     public String getName() {
-        return null;
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public double getCgpa() {
+        return cgpa;
+    }
+
+    private Comparator<Student> comparator =
+            Comparator.
+                    comparingDouble(Student::getCgpa).reversed().
+                    thenComparing(Student::getName).
+                    thenComparingInt(Student::getId);
+
+    @Override
+    public int compareTo(Student otherStudent) {
+        if(otherStudent != null) {
+            return comparator.compare(this, otherStudent);
+        } else {
+            return -1;
+        }
     }
 }
 
 class Priorities {
 
+    List<Student> students;
+
     public List<Student> getStudents(List<String> events) {
-        return null;
+        students = new ArrayList<>();
+
+        for(String event : events){
+            if(event.equals("SERVED")){
+                serveStudents();
+            } else {
+                addNewStudent(event);
+            }
+        }
+
+        return students;
+    }
+
+    private void serveStudents() {
+        if(!students.isEmpty()) {
+            Collections.sort(students);
+            students.remove(0);
+        }
+    }
+
+    private void addNewStudent(String event){
+        String[] enter = event.split(" ");
+        students.add(new Student(Integer.parseInt(enter[3]), enter[1], Double.parseDouble(enter[2])));
     }
 }
