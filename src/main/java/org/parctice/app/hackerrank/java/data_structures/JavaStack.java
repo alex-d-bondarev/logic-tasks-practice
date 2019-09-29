@@ -25,7 +25,7 @@ public class JavaStack {
         sc.close();
     }
 
-    private static boolean bracketsAreBalanced(String line){
+    public static boolean bracketsAreBalanced(String line){
         boolean balanced = true;
         Stack<Character> charStack = new Stack<>();
 
