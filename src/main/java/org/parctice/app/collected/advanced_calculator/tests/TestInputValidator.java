@@ -1,6 +1,7 @@
-package org.parctice.app.collected.advanced_calculator;
+package org.parctice.app.collected.advanced_calculator.tests;
 
 import org.junit.Test;
+import org.parctice.app.collected.advanced_calculator.input.InputValidator;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

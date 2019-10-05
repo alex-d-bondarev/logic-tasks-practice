@@ -1,4 +1,4 @@
-package org.parctice.app.collected.advanced_calculator;
+package org.parctice.app.collected.advanced_calculator.input;
 
 import org.parctice.app.hackerrank.java.data_structures.JavaStack;
 

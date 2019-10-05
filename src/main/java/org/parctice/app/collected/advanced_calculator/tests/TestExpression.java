@@ -1,6 +1,7 @@
-package org.parctice.app.collected.advanced_calculator.expression;
+package org.parctice.app.collected.advanced_calculator.tests;
 
 import org.junit.Test;
+import org.parctice.app.collected.advanced_calculator.expression.*;
 
 import static org.junit.Assert.assertEquals;
 
