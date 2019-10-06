@@ -1,17 +1,8 @@
-package org.parctice.app.collected.advanced_calculator.parsing;
+package org.parctice.app.collected.advanced_calculator.validator;
 
 import java.util.Stack;
 
-/*
- * Credit for idea: https://www2.seas.gwu.edu/~simhaweb/cs1112/modules/module10/suppl/index.html
- * */
-public class ExpressionParser {
-
-    public static String replaceBracketsWithParenthesis(String expression) {
-        return expression.
-                replaceAll("[\\{\\[]", "(").
-                replaceAll("[\\]\\}]", ")");
-    }
+public class ExpressionValidator {
 
     public static boolean needsParenthesis(String expression) {
         boolean needsParenthesis = false;
@@ -38,6 +29,8 @@ public class ExpressionParser {
                 charStack.pop();
             } else if (nextChar == '(') {
                 return false;
+            } else if (!Character.isDigit(nextChar)) {
+                return true;
             }
         }
 
@@ -56,9 +49,10 @@ public class ExpressionParser {
                 charStack.pop();
             } else if (nextChar == ')') {
                 return false;
+            } else if (!Character.isDigit(nextChar)) {
+                return true;
             }
         }
-
         return true;
     }
 }

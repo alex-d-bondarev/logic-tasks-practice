@@ -1,4 +1,4 @@
-package org.parctice.app.collected.advanced_calculator.input;
+package org.parctice.app.collected.advanced_calculator.validator;
 
 import org.parctice.app.hackerrank.java.data_structures.JavaStackBracketsBalancer;
 
