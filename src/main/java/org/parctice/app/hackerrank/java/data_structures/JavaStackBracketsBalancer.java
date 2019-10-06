@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.util.*;
 
-public class JavaStack {
+public class JavaStackBracketsBalancer {
 
     private static final List<Character> openingBrackets = Arrays.asList('{', '[', '(');
     private static final Map<Character, Character> bracketPairs = new HashMap<Character, Character>(){{
