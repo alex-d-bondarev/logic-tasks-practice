@@ -3,8 +3,7 @@ package org.parctice.app.collected.advanced_calculator.tests;
 import org.junit.Test;
 import org.parctice.app.collected.advanced_calculator.util.ParenthesisUtil;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TestParenthesisUtil {
 
@@ -21,15 +20,15 @@ public class TestParenthesisUtil {
     }
 
     @Test
-    public void simpleMultiplicationNeedsParenthesis(){
+    public void parenthesisNotNeededForShortMultiplication(){
         String testExpression = "2*2";
-        assertTrue(ParenthesisUtil.needsParenthesis(testExpression));
+        assertFalse(ParenthesisUtil.needsParenthesis(testExpression));
     }
 
     @Test
-    public void simpleDivisionNeedsParenthesis(){
+    public void parenthesisNotNeededForShortDivision(){
         String testExpression = "2/2";
-        assertTrue(ParenthesisUtil.needsParenthesis(testExpression));
+        assertFalse(ParenthesisUtil.needsParenthesis(testExpression));
     }
 
     @Test
@@ -63,14 +62,49 @@ public class TestParenthesisUtil {
     }
 
     @Test
-    public void complexExpressionNeedsParenthesis(){
+    public void complexExpressionNeedsParenthesisForSequence(){
         String testExpression = "(2+2*(2/2))";
         assertTrue(ParenthesisUtil.needsParenthesis(testExpression));
     }
 
     @Test
-    public void complexExpressionDoesNotNeedParenthesis(){
+    public void sequenceHasAllNeededParenthesis(){
         String testExpression = "(2+(2*(2/2)))";
         assertFalse(ParenthesisUtil.needsParenthesis(testExpression));
+    }
+
+    @Test
+    public void addParenthesisToSimpleExpressionForSequence(){
+        String testExpression = "1+2*3";
+        String expectedExpression = "1+(2*3)";
+        assertEquals(expectedExpression, ParenthesisUtil.addMissedParenthesis(testExpression));
+    }
+
+    @Test
+    public void addMultipleParenthesisToSimpleExpressionForSequence(){
+        String testExpression = "1+2*3+4*5";
+        String expectedExpression = "1+(2*3)+(4*5)";
+        assertEquals(expectedExpression, ParenthesisUtil.addMissedParenthesis(testExpression));
+    }
+
+    @Test
+    public void noExtraParenthesisNeededForComplexShortExpression(){
+        String testExpression = "(1+2)*3";
+        String expectedExpression = "(1+2)*3";
+        assertEquals(expectedExpression, ParenthesisUtil.addMissedParenthesis(testExpression));
+    }
+
+    @Test
+    public void additionalParenthesisNeededForComplexExpression(){
+        String testExpression = "(1+2)*3+4*5";
+        String expectedExpression = "(1+2)*3+(4*5)";
+        assertEquals(expectedExpression, ParenthesisUtil.addMissedParenthesis(testExpression));
+    }
+
+    @Test
+    public void differentExpressionOrderRequiresDifferentParenthesis(){
+        String testExpression = "(1+2)+3*4*5";
+        String expectedExpression = "(1+2)+((3*4)*5)";
+        assertEquals(expectedExpression, ParenthesisUtil.addMissedParenthesis(testExpression));
     }
 }
