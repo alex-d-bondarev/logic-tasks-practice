@@ -1,6 +1,6 @@
 package org.parctice.app.collected.advanced_calculator.expression;
 
-public class SumExpression extends EvaluatingExpression {
+public class SumExpression extends OperandExpression {
 
     public SumExpression(Expression left, Expression right){
         super(left, right);

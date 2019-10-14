@@ -1,6 +1,6 @@
 package org.parctice.app.collected.advanced_calculator.expression;
 
-public class DifferenceExpression extends EvaluatingExpression {
+public class DifferenceExpression extends OperandExpression {
     public DifferenceExpression(Expression left, Expression right) {
         super(left, right);
     }

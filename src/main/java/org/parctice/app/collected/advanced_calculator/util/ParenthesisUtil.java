@@ -18,8 +18,11 @@ public class ParenthesisUtil {
                     withClosingParenthesis(')').
                     build();
 
-    private static final String PRIORITY_PARENTHESIS = "*/";
+    private static final String PRIORITY_OPERANDS = "*/";
 
+    public static int findStartIndexOfRightExpressionPart(String expression){
+        return getOpeningParenthesisPosition(expression, PARENTHESIS_TO_THE_RIGHT);
+    }
 
     public static String addMissedParenthesis(String expression) {
         while (needsParenthesis(expression)) {
@@ -31,7 +34,7 @@ public class ParenthesisUtil {
     public static boolean needsParenthesis(String expression) {
         boolean needsParenthesis = false;
         for (int i = 0; i < expression.length(); i++) {
-            if (PRIORITY_PARENTHESIS.indexOf(expression.charAt(i)) >= 0 &&
+            if ((PRIORITY_OPERANDS.indexOf(expression.charAt(i)) >= 0 ) &&
                     needsLeftParenthesis(expression.substring(0, i)) &&
                     needsRightParenthesis(expression.substring(i, expression.length() - 1))) {
                 needsParenthesis = true;
@@ -44,7 +47,7 @@ public class ParenthesisUtil {
         int nowhere = -1;
 
         for (int i = 0; i < expression.length(); i++) {
-            if (PRIORITY_PARENTHESIS.indexOf(expression.charAt(i)) >= 0 &&
+            if (PRIORITY_OPERANDS.indexOf(expression.charAt(i)) >= 0 &&
                     needsLeftParenthesis(expression.substring(0, i)) &&
                     needsRightParenthesis(expression.substring(i))) {
                 return i;
@@ -95,8 +98,8 @@ public class ParenthesisUtil {
     }
 
     /**
-     * @param expression       string of expression to search
-     * @param parenthesisModel that contains description of expected parenthesises
+     * @param expression       string of expression to search from left to right
+     * @param parenthesisModel model that contains description of expected parenthesises
      * @return the index of closing parenthesis or -1 if none was found
      */
     private static int getClosingParenthesisPosition(String expression, CharStackParenthesisModel parenthesisModel) {
@@ -110,6 +113,32 @@ public class ParenthesisUtil {
             if (nextChar == parenthesisModel.getOpeningParenthesis()) {
                 charStack.push(nextChar);
             } else if (!charStack.isEmpty() && nextChar == parenthesisModel.getClosingParenthesis()) {
+                charStack.pop();
+            } else if (charStack.isEmpty() && !Character.isDigit(nextChar)) {
+                return i;
+            }
+        }
+        return positionNotFound;
+    }
+
+    /**
+     * Similar as above but reversed.
+     *
+     * @param expression       string of expression to search from right to left
+     * @param parenthesisModel model that contains description of expected parenthesises
+     * @return the index of opening parenthesis or -1 if none was found
+     */
+    private static int getOpeningParenthesisPosition(String expression, CharStackParenthesisModel parenthesisModel) {
+        Stack<Character> charStack = new Stack<>();
+        char nextChar;
+        int positionNotFound = -1;
+
+        for (int i = expression.length() - 1; i >= 0; i--) {
+            nextChar = expression.charAt(i);
+
+            if (nextChar == parenthesisModel.getClosingParenthesis()) {
+                charStack.push(nextChar);
+            } else if (!charStack.isEmpty() && nextChar == parenthesisModel.getOpeningParenthesis()) {
                 charStack.pop();
             } else if (charStack.isEmpty() && !Character.isDigit(nextChar)) {
                 return i;

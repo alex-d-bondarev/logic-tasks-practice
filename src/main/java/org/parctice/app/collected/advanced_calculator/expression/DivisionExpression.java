@@ -1,6 +1,6 @@
 package org.parctice.app.collected.advanced_calculator.expression;
 
-public class DivisionExpression extends EvaluatingExpression {
+public class DivisionExpression extends OperandExpression {
     public DivisionExpression(Expression left, Expression right) {
         super(left, right);
     }
