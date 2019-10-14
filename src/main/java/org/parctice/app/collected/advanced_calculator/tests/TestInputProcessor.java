@@ -1,7 +1,7 @@
 package org.parctice.app.collected.advanced_calculator.tests;
 
 import org.junit.Test;
-import org.parctice.app.collected.advanced_calculator.processor.InputProcessor;
+import org.parctice.app.collected.advanced_calculator.parser.InputProcessor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
