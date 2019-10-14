@@ -21,8 +21,8 @@ public class ExpressionParser {
      * 1. expression like "10 - 2 + 4 - 5 + 6 = 13" will be calculated as "((((10 - 2) + 4) - 5) + 6) = 13"
      * 2. expression like "10 - 2 - 4 + 5 - 6 = 3" will be calculated as "((((10 - 2) - 4) + 5) - 6) = 3"
      *
-     * @param expression
-     * @return
+     * @param expression string to parse
+     * @return Expression tree that is ready for calculation
      */
     public static Expression parseExpression(String expression) {
 

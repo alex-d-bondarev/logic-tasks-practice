@@ -5,17 +5,17 @@ import org.parctice.app.hackerrank.java.data_structures.JavaStackBracketsBalance
 public class InputProcessor {
 
     public static boolean hasNoExtraSymbols(String expression){
-        return expression.matches("[\\(\\)\\+\\-\\*\\/\\d]+");
+        return expression.matches("[()+\\-*/\\d]+");
     }
 
     public static boolean isParenthesesBalanced(String expression){
-        return JavaStackBracketsBalancer.bracketsAreBalanced(expression.replaceAll("[^\\(\\)]", ""));
+        return JavaStackBracketsBalancer.bracketsAreBalanced(expression.replaceAll("[^()]", ""));
     }
 
     public static String replaceBracketsWithParenthesis(String expression) {
         return expression.
-                replaceAll("[\\{\\[]", "(").
-                replaceAll("[\\]\\}]", ")");
+                replaceAll("[{\\[]", "(").
+                replaceAll("[]}]", ")");
     }
 
     public static String removeExtraSpaces(String expression) {
