@@ -58,6 +58,45 @@ public class ShortPathTest {
     }
 
     @Test
+    public void canMoveLeft(){
+        Point start = Point.createPoint(1, 1);
+        Point end = Point.createPoint(0, 1);
+        List<Point> expectedPath = Collections.singletonList(Point.createPoint(1, 1, 0, 1));
+
+        aStar.setStart(start);
+        aStar.setEnd(end);
+
+        List<Point> actualPath = aStar.calculatePath();
+        assertEquals(expectedPath, actualPath);
+    }
+
+    @Test
+    public void canMoveDown(){
+        Point start = Point.createPoint(1, 1);
+        Point end = Point.createPoint(1, 2);
+        List<Point> expectedPath = Collections.singletonList(Point.createPoint(1, 1, 0, 1));
+
+        aStar.setStart(start);
+        aStar.setEnd(end);
+
+        List<Point> actualPath = aStar.calculatePath();
+        assertEquals(expectedPath, actualPath);
+    }
+
+    @Test
+    public void canMoveRight(){
+        Point start = Point.createPoint(1, 1);
+        Point end = Point.createPoint(2, 1);
+        List<Point> expectedPath = Collections.singletonList(Point.createPoint(1, 1, 0, 1));
+
+        aStar.setStart(start);
+        aStar.setEnd(end);
+
+        List<Point> actualPath = aStar.calculatePath();
+        assertEquals(expectedPath, actualPath);
+    }
+
+    @Test
     public void canMoveUp2Steps(){
         Point start = Point.createPoint(1, 2);
         Point end = Point.createPoint(1, 0);

@@ -44,7 +44,7 @@ public class AStar {
             map.printResult();
         }
 
-        if(pathFound){
+        if (pathFound) {
             System.out.println(foundPath);
             return foundPath;
         } else {
@@ -55,32 +55,50 @@ public class AStar {
 
     private void tryMovingAllDirectionsFrom(Point point) {
         tryMovingUpFrom(point);
-        markClosed(point);
+        tryMovingLeftFrom(point);
+        tryMovingDownFrom(point);
+        tryMovingRightFrom(point);
+        addToClosedList(point);
+    }
+
+    private void tryMovingRightFrom(Point point) {
+        tryMovingToDirection(point.x + 1, point.y, point);
+    }
+
+    private void tryMovingDownFrom(Point point) {
+        tryMovingToDirection(point.x, point.y + 1, point);
+    }
+
+    private void tryMovingLeftFrom(Point point) {
+        tryMovingToDirection(point.x - 1, point.y, point);
     }
 
     private void tryMovingUpFrom(Point point) {
+        tryMovingToDirection(point.x, point.y - 1, point);
+    }
+
+    private void tryMovingToDirection(int nextX, int nextY, Point currentPoint) {
         if (!pathFound) {
-            int newY = point.y - 1;
-            int newMoved = point.moved + 1;
-            int newEstimatedMovesLeft = ManhattanDistance.between(point.x, newY, end.x, end.y);
+            int newMoved = currentPoint.moved + 1;
+            int newEstimatedMovesLeft = ManhattanDistance.between(nextX, nextY, end.x, end.y);
 
             Point upPoint = Point.createPoint(
-                    point.x,
-                    newY,
+                    nextX,
+                    nextY,
                     newMoved,
                     newEstimatedMovesLeft);
-            upPoint.setPreviousPoint(point);
+            upPoint.setPreviousPoint(currentPoint);
 
             if (upPoint.equals(end)) {
-                pathEndsOn(point);
+                pathEndsOn(currentPoint);
             } else if (map.canMoveTo(upPoint)) {
-                checkOpenListAgainst(upPoint);
-                checkClosedListAgainst(upPoint);
+                compareWithOpenList(upPoint);
+                compareWithClosedList(upPoint);
             }
         }
     }
 
-    private void checkOpenListAgainst(Point point) {
+    private void compareWithOpenList(Point point) {
         if (openList.contains(point)) {
             int indexOfSimilarPoint = openList.indexOf(point);
             Point previousPoint = openList.get(indexOfSimilarPoint);
@@ -88,21 +106,21 @@ public class AStar {
             openList.add(
                     previousPoint.compareTo(point) <= 0 ? previousPoint : point
             );
-        } else {
-            openList.add(point);
         }
-        map.markPotentialPath(point);
     }
 
-    private void checkClosedListAgainst(Point point) {
+    private void compareWithClosedList(Point point) {
         if (closedList.contains(point)) {
             int indexOfSimilarPoint = closedList.indexOf(point);
             Point previousPoint = closedList.get(indexOfSimilarPoint);
             if (previousPoint.compareTo(point) > 0) {
                 closedList.remove(previousPoint);
-            } else {
-                map.markDeadEnd(point);
+                openList.add(point);
+                map.markPotentialPath(point);
             }
+        } else {
+            openList.add(point);
+            map.markPotentialPath(point);
         }
     }
 
@@ -120,9 +138,10 @@ public class AStar {
         }
     }
 
-    private void markClosed(Point point) {
+    private void addToClosedList(Point point) {
         openList.remove(point);
         closedList.add(point);
+        map.markClosed(point);
     }
 
     private void prepareForCalculations() {

@@ -73,7 +73,6 @@ public class WorldMap {
         System.out.println("Empty stands for unvisited");
         System.out.println("X stands for obstacle");
         System.out.println("O stands for potential path");
-        System.out.println("D stands for potential dead end");
         System.out.println("S stands for start");
         System.out.println("E stands for end");
         System.out.println("P stands for calculated path");
@@ -103,8 +102,10 @@ public class WorldMap {
         result[point.x][point.y] = "O";
     }
 
-    public void markDeadEnd(Point point) {
-        result[point.x][point.y] = "D";
+    public void markClosed(Point point) {
+        if (!result[point.x][point.y].equals("S")) {
+            result[point.x][point.y] = "C";
+        }
     }
 
     public static class OutOfBounds extends RuntimeException {
