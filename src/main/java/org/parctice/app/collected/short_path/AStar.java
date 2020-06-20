@@ -128,6 +128,7 @@ public class AStar {
         pathFound = true;
         map.markPathTo(point);
         updateFoundPathWith(point);
+        map.printResult();
     }
 
     private void updateFoundPathWith(Point point) {

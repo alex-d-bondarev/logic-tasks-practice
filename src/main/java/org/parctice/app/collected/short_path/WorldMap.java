@@ -32,8 +32,8 @@ public class WorldMap {
 
     private int getLongestColumn() {
         int max = 0;
-        for (int[] sub : map) {
-            max = Math.max(sub.length, max);
+        for (int i = 0; i < map.length; i++) {
+            max = Math.max(map[i].length, max);
         }
         return max;
     }
@@ -103,7 +103,7 @@ public class WorldMap {
     }
 
     public void markClosed(Point point) {
-        if (!result[point.x][point.y].equals("S")) {
+        if (!result[point.x][point.y].equals("S") && !result[point.x][point.y].equals("P")) {
             result[point.x][point.y] = "C";
         }
     }
