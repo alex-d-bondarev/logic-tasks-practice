@@ -38,11 +38,6 @@ public class Point implements Comparable<Point>{
         return String.format("x=%d:y=%d:moved=%d:estimated=%d;", x, y, moved, estimatedMovesLeft);
     }
 
-    @Override
-    public int hashCode() {
-        return x+y;
-    }
-
     public Point getPreviousPoint() {
         return previousPoint;
     }

@@ -22,14 +22,6 @@ public class WorldMap {
         copyMapToResult();
     }
 
-    private void copyMapToResult() {
-        for (int x = 0; x < map.length; x++) {
-            for (int y = 0; y < map[x].length; y++) {
-                result[x][y] = map[x][y] == 0 ? " " : "X";
-            }
-        }
-    }
-
     private int getLongestColumn() {
         int max = 0;
         for (int i = 0; i < map.length; i++) {
@@ -38,20 +30,28 @@ public class WorldMap {
         return max;
     }
 
+    private void copyMapToResult() {
+        for (int x = 0; x < map.length; x++) {
+            for (int y = 0; y < map[x].length; y++) {
+                result[x][y] = map[x][y] == 0 ? " " : "X";
+            }
+        }
+    }
+
     public boolean canMoveTo(Point point) {
         int x = point.x;
         int y = point.y;
         return xIsInMap(x) &&
-                yIsInMap(map[x].length > y, y) &&
+                yIsInMap(x, y) &&
                 !isObstacle(x, y);
-    }
-
-    private boolean yIsInMap(boolean b, int y) {
-        return y >= 0 && b;
     }
 
     private boolean xIsInMap(int x) {
         return x >= 0 && map.length > x;
+    }
+
+    private boolean yIsInMap(int x, int y) {
+        return y >= 0 && map[x].length > y;
     }
 
     public boolean isObstacle(int x, int y) {
@@ -81,30 +81,34 @@ public class WorldMap {
     }
 
     public void markStart(Point start) {
-        result[start.x][start.y] = "S";
+        markPointWith(start, "S");
+    }
+
+    private void markPointWith(Point point, String mark){
+        result[point.x][point.y] = mark;
     }
 
     public void markEnd(Point end) {
-        result[end.x][end.y] = "E";
+        markPointWith(end, "E");
     }
 
-    public void markPathTo(Point point) {
-        if (!result[point.x][point.y].equals("S")) {
-            result[point.x][point.y] = "P";
-        }
-        Point previousPoint = point.getPreviousPoint();
-        if (previousPoint != null) {
-            markPathTo(previousPoint);
+    public void markPath(Point point) {
+        if (pointIsNot(point, "S")) {
+            markPointWith(point, "P");
         }
     }
 
-    public void markPotentialPath(Point point) {
-        result[point.x][point.y] = "O";
+    private boolean pointIsNot(Point point, String mark){
+        return !result[point.x][point.y].equals(mark);
+    }
+
+    public void markOpen(Point point) {
+        markPointWith(point, "O");
     }
 
     public void markClosed(Point point) {
-        if (!result[point.x][point.y].equals("S") && !result[point.x][point.y].equals("P")) {
-            result[point.x][point.y] = "C";
+        if (pointIsNot(point, "S") && pointIsNot(point, "P")) {
+            markPointWith(point, "C");
         }
     }
 

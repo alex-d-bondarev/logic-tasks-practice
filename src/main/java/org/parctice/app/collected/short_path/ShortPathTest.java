@@ -17,13 +17,29 @@ public class ShortPathTest {
     private int[][] map;
     private AStar aStar;
 
+    private void assertAmountOfSteps(Point start, Point end, int expectedSteps) {
+        aStar.setStart(start);
+        aStar.setEnd(end);
+
+        int stepsTaken = aStar.calculatePath().size();
+        assertEquals(expectedSteps, stepsTaken);
+    }
+
+    private void assertPathIsFound(Point start, Point end, List<Point> expectedPath) {
+        aStar.setStart(start);
+        aStar.setEnd(end);
+
+        List<Point> actualPath = aStar.calculatePath();
+        assertEquals(expectedPath, actualPath);
+    }
+
     @Before
     public void setup() {
         map = new int[][]{
                 {0, 0, 0},
                 {0, 0, 0},
                 {0, 0, 0},
-                {1, 1, 0},
+                {1, 1, 1},
                 {0, 0, 0}
         };
         aStar = new AStar(new WorldMap(map));
@@ -98,11 +114,16 @@ public class ShortPathTest {
         Point end = Point.createPoint(2, 2);
         int expectedSteps = 2;
 
-        aStar.setStart(start);
-        aStar.setEnd(end);
+        assertAmountOfSteps(start, end, expectedSteps);
+    }
 
-        int stepsTaken = aStar.calculatePath().size();
-        assertEquals(expectedSteps, stepsTaken);
+    @Test
+    public void noPathFound() {
+        Point start = Point.createPoint(0, 0);
+        Point end = Point.createPoint(4, 2);
+        int expectedSteps = 0;
+
+        assertAmountOfSteps(start, end, expectedSteps);
     }
 
     @Test
@@ -123,18 +144,6 @@ public class ShortPathTest {
         };
 
         aStar = new AStar(new WorldMap(map));
-        aStar.setStart(start);
-        aStar.setEnd(end);
-
-        int stepsTaken = aStar.calculatePath().size();
-        assertEquals(expectedSteps, stepsTaken);
-    }
-
-    private void assertPathIsFound(Point start, Point end, List<Point> expectedPath) {
-        aStar.setStart(start);
-        aStar.setEnd(end);
-
-        List<Point> actualPath = aStar.calculatePath();
-        assertEquals(expectedPath, actualPath);
+        assertAmountOfSteps(start, end, expectedSteps);
     }
 }
