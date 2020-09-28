@@ -1,4 +1,4 @@
-package org.parctice.app.codility.binary_gap;
+package org.parctice.app.codility;
 
 import org.junit.Test;
 
